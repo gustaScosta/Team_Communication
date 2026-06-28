@@ -1,12 +1,16 @@
-from sqlalquemy import creat_engine
-from sqlalquemy import declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-engine = creat_engine('postgresql://neondb_owner:npg_lXwgumYP71KN@ep-polished-sound-ack27btm-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require')
+engine = create_engine(
+    "postgresql+psycopg://usuario:senha@host/neondb?sslmode=require")
+class Base(DeclarativeBase):
+    pass
 
-base = declarative_base()
-
-class Usuario(base):
+class Usuario(Base):
     __tablename__ = "usuarios"
 
-    id: mapped[int] = mapped_column(primary_key=True)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    nome: Mapped[str] = mapped_column(nullable=False)
+
+
+Base.metadata.create_all(engine)
